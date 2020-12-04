@@ -30,7 +30,10 @@ const authenticatePolicy = (passwordList: string[]): number =>
         }).length;
 
 const main = () => {
-    const passwords: string[] = readFile(`${__dirname}/input.txt`).split(/\r?\n/);
+    const input: string = readFile(`${__dirname}/input.txt`);
+
+    const passwords: string[] = input.split(/\r?\n/);
+
     console.log(authenticatePolicy(passwords));
 };
 
