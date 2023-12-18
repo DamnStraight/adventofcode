@@ -1,9 +1,11 @@
+
 const file = Bun.file("./input.txt");
 const data: string[] = (await file.text()).split("\n");
 
-let score = 0;
+let sum = 0;
+let copies = new Array(data.length).fill(1);
 
-for (const line of data) {
+for (const [index, line] of data.entries()) {
   const matches = [...line.matchAll(/^Card\s+\d+\:\s+((?:\d+\s+)+)\|\s+((?:\d+\s*)+)/gm)];
 
   if (matches.length == 0) continue;
@@ -19,10 +21,13 @@ for (const line of data) {
   ]);
 
   const matchingNumbers = (winningNumArr.length + selectedNumArr.length) - result.size;
-  score += (matchingNumbers == 0) 
-    ? 0 
-    : Math.pow(2, matchingNumbers - 1);
+
+  let copyMin = Math.min(index + 1 + matchingNumbers, data.length - 1);
+  for (let i = index + 1; i < copyMin; i++) {
+    copies[i] += copies[index];
+  }
+
+  sum += copies[index];
 }
 
-
-console.log(score);
+console.log(sum);
